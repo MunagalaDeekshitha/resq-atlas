@@ -43,11 +43,14 @@ export function parseGDACS(data: any): DisasterEvent[] {
 const ymd = (d: Date) => d.toISOString().slice(0, 10);
 
 export async function fetchGDACS(days: number): Promise<DisasterEvent[]> {
+  // Always ask GDACS for a fixed 7-day window (short windows made the API fail or return nothing),
+  // then trim to the range the person selected.
   const to = new Date();
-  const from = new Date(to.getTime() - days * 86400000);
+  const from = new Date(to.getTime() - 7 * 86400000);
   // Orange/Red alerts only: the significant events (green quakes are already covered by USGS).
   const url =
     'https://www.gdacs.org/gdacsapi/api/events/geteventlist/SEARCH' +
     `?eventlist=EQ;TC;FL;VO;WF&fromdate=${ymd(from)}&todate=${ymd(to)}&alertlevel=Orange;Red`;
-  return parseGDACS(await fetchJson(url));
+  const cutoff = Date.now() - days * 86400000;
+  return parseGDACS(await fetchJson(url)).filter((e) => new Date(e.time).getTime() >= cutoff);
 }
