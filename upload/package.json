@@ -1,0 +1,26 @@
+{
+  "name": "resq-atlas",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Live multi-hazard disaster map with AI safety briefs, hotspot clustering and priority scoring.",
+  "scripts": {
+    "dev": "next dev",
+    "build": "next build",
+    "start": "next start",
+    "selftest": "tsx scripts/selftest.ts"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "next": "^14.2.35",
+    "react": "^18.3.1",
+    "react-dom": "^18.3.1"
+  },
+  "devDependencies": {
+    "@types/leaflet": "^1.9.12",
+    "@types/node": "^20.19.43",
+    "@types/react": "^18.3.31",
+    "@types/react-dom": "^18.3.7",
+    "tsx": "^4.23.13",
+    "typescript": "^5.9.3"
+  }
+}
