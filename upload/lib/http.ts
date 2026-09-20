@@ -8,7 +8,9 @@ async function once<T>(url: string, timeoutMs: number): Promise<T> {
       headers: { Accept: 'application/json', 'User-Agent': 'ResQ-Atlas/0.1 (hackathon project)' },
     });
     if (!res.ok) throw new Error(`HTTP ${res.status}`);
-    return (await res.json()) as T;
+    // some feeds return an empty body when there are no results: treat that as "no data", not an error
+    const text = await res.text();
+    return (text.trim() ? JSON.parse(text) : {}) as T;
   } finally {
     clearTimeout(timer);
   }
